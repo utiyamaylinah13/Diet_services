@@ -4,18 +4,18 @@ from models.user_model import db, User
 def register_user():
     data = request.get_json()
     username = data.get("username")
+    email = data.get("email")
     password = data.get("password")
+    confirm_password = data.get("confirm")
 
-    if not username or not password:
+    if not username or not password or not email or not confirm_password:
         return jsonify({"message": "Username dan password wajib diisi"}), 400
 
-    # Cek user sudah ada
     existing_user = User.query.filter_by(username=username).first()
     if existing_user:
         return jsonify({"message": "Username sudah terdaftar"}), 409
 
-    # Simpan user baru
-    new_user = User(username, password)
+    new_user = User(username, email, password, confirm_password)
     db.session.add(new_user)
     db.session.commit()
 
