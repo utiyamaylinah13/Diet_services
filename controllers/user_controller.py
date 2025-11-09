@@ -1,4 +1,4 @@
-from flask import jsonify, request
+from flask import jsonify, request,render_template
 from models.user_model import db, User
 
 def register_user():
@@ -34,4 +34,4 @@ def login_user():
     if not user.check_password(password):
         return jsonify({"message": "Password salah"}), 401
 
-    return jsonify({"message": "Login berhasil", "username": username}), 200
+    return render_template('auth/login.html')
